@@ -47,13 +47,26 @@ public abstract class RenameJar extends ToolExecBase<RenamerProblems> implements
 
     protected abstract @Internal Property<Date> getArchiveDate();
 
-    protected abstract @Inject TaskDependencyFactory getTaskDependencyFactory();
-
     @Inject
     public RenameJar() {
         super(Tools.RENAMER);
 
-        this.getOutput().convention(this.getDefaultOutputFile());
+        this.getOutput().convention(
+            getObjects().fileProperty().fileProvider(getProviders().zip(this.getInput().getLocationOnly(), this.getArchiveClassifier().orElse(""), (input, classifier) -> {
+                var file = input.getAsFile();
+                String name;
+                {
+                    int idx = file.getName().lastIndexOf('.');
+                    var inputName = file.getName().substring(0, idx);
+                    var ext = file.getName().substring(idx);
+                    name = inputName + classifier + ext;
+
+                    if (name.equals(file.getName()))
+                        name = inputName + classifier + "-renamed" + ext;
+                }
+                return new File(file.getParentFile(), name);
+            })).orElse(this.getDefaultOutputFile())
+        );
         this.getLibraries().convention(getProject().getExtensions().getByType(JavaPluginExtension.class).getSourceSets().named(SourceSet.MAIN_SOURCE_SET_NAME).map(SourceSet::getCompileClasspath));
 
         this.getArchiveExtension().convention("jar");
@@ -89,33 +102,38 @@ public abstract class RenameJar extends ToolExecBase<RenamerProblems> implements
     }
 
     @Override
+    @Deprecated
     public @Internal @Nullable String getClassifier() {
         return this.getArchiveClassifier().getOrNull();
     }
 
     @Override
+    @Deprecated
     public @Internal String getExtension() {
         return this.getArchiveExtension().get();
     }
 
     @Override
+    @Deprecated
     public @Internal String getType() {
         return this.getExtension();
     }
 
     @Override
+    @Deprecated
     public @Internal File getFile() {
         return this.getOutput().getAsFile().get();
     }
 
     @Override
+    @Deprecated
     public @Internal Date getDate() {
         return this.getArchiveDate().get();
     }
 
     @Override
     public @Internal TaskDependency getBuildDependencies() {
-        return task -> Set.of(RenameJar.this);
+        return task -> Set.of(this);
     }
 }
 
