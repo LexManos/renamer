@@ -16,8 +16,7 @@ dependencies {
     compileOnly libs.log4j.api
 }
 
-tasks.register("renameJar", RenameJar) {
-    from tasks.named('jar', Jar)
+renamer.classes(jar) {
     map = files('libs/mappings_test-1.0.tsrg.gz')
 }
 

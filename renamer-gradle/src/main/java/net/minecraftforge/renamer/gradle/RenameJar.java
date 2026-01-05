@@ -2,13 +2,17 @@ package net.minecraftforge.renamer.gradle;
 
 import net.minecraftforge.gradleutils.shared.ToolExecBase;
 import org.gradle.api.Task;
+import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.PublishArtifact;
+import org.gradle.api.artifacts.dsl.DependencyFactory;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.internal.tasks.DefaultTaskDependency;
 import org.gradle.api.internal.tasks.TaskDependencyFactory;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.Property;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.CompileClasspath;
@@ -47,9 +51,20 @@ public abstract class RenameJar extends ToolExecBase<RenamerProblems> implements
 
     protected abstract @Internal Property<Date> getArchiveDate();
 
+    protected abstract @Inject DependencyFactory getDependencyFactory();
+
     @Inject
     public RenameJar() {
         super(Tools.RENAMER);
+
+        // As a reminder, this is overridden by manually calling one of the #mappings methods
+        this.getMap().convention(getProviders().provider(() -> {
+            // TODO [Renamer] This assumes there's only ever one registered renamer, but i don't care for now
+            var renamer = (RenamerExtensionImpl) getProject().getExtensions().findByType(RenamerExtension.class);
+            if (renamer == null) return null;
+
+            return renamer.mappings;
+        }));
 
         this.getOutput().convention(
             getObjects().fileProperty().fileProvider(getProviders().zip(this.getInput().getLocationOnly(), this.getArchiveClassifier().orElse(""), (input, classifier) -> {
@@ -74,13 +89,36 @@ public abstract class RenameJar extends ToolExecBase<RenamerProblems> implements
     }
 
     public void from(AbstractArchiveTask task) {
-        this.from(getProject().getTasks().named(task.getName(), task.getClass()));
+        this.from(getProject().getTasks().named(task.getName(), AbstractArchiveTask.class));
     }
 
     public void from(TaskProvider<? extends AbstractArchiveTask> task) {
         this.getInput().set(task.flatMap(AbstractArchiveTask::getArchiveFile));
         this.getArchiveClassifier().set(task.flatMap(AbstractArchiveTask::getArchiveClassifier).filter(Util.STRING_IS_PRESENT).map(s -> s + "-renamed").orElse("renamed"));
         this.getArchiveExtension().set(task.flatMap(AbstractArchiveTask::getArchiveExtension).orElse("jar"));
+    }
+
+    public void mappings(String artifact) {
+        this.mappings(getDependencyFactory().create(artifact));
+    }
+
+    public void mappings(Dependency dependency) {
+        var configuration = getProject().getConfigurations().detachedConfiguration(dependency);
+        configuration.setTransitive(false);
+
+        this.setMappings(configuration);
+    }
+
+    public void mappings(Provider<? extends Dependency> dependency) {
+        var configuration = getProject().getConfigurations().detachedConfiguration();
+        configuration.getDependencies().addLater(dependency);
+        configuration.setTransitive(false);
+
+        this.setMappings(configuration);
+    }
+
+    public void setMappings(FileCollection files) {
+        this.getMap().setFrom(files);
     }
 
     @Override
