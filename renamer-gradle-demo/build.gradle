@@ -28,12 +28,10 @@ publishing {
     }
 }
 
-//renamer.register {
+//renamer {
 //    mappings = files('libs/mappings_test-1.0.tsrg.gz')
 //    //mappings('test', '1.0')
 //    //mappings dependencies.variantOf(libs.mappings) { artifactType 'tsrg.gz' }
 //}
 //
-//renamer.register('renameRemote') {
-//    classes(jar)
-//}
+//renamer.classes('renameRemote', jar)
