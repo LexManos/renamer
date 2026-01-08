@@ -17,20 +17,20 @@ interface RenamerExtensionInternal extends RenamerExtension, HasPublicType {
     }
 
     @Override
-    default void classes(String name, AbstractArchiveTask input, Action<? super RenameJar> action) {
-        this.classes(name, it -> {
+    default TaskProvider<RenameJar> classes(String name, AbstractArchiveTask input, Action<? super RenameJar> action) {
+        return this.classes(name, it -> {
             it.from(input);
             action.execute(it);
         });
     }
 
     @Override
-    default void classes(String name, TaskProvider<? extends AbstractArchiveTask> input, Action<? super RenameJar> action) {
-        this.classes(name, it -> {
+    default TaskProvider<RenameJar> classes(String name, TaskProvider<? extends AbstractArchiveTask> input, Action<? super RenameJar> action) {
+        return this.classes(name, it -> {
             it.from(input);
             action.execute(it);
         });
     }
 
-    void classes(String name, Action<? super RenameJar> action);
+    TaskProvider<RenameJar> classes(String name, Action<? super RenameJar> action);
 }

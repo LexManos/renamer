@@ -34,31 +34,31 @@ public interface RenamerExtension {
 
     void setMappings(FileCollection files);
 
-    default void classes(AbstractArchiveTask input) {
-        this.classes(input, it -> it.from(input));
+    default TaskProvider<RenameJar> classes(AbstractArchiveTask input) {
+        return this.classes(input, it -> it.from(input));
     }
 
-    default void classes(AbstractArchiveTask input, Action<? super RenameJar> action) {
-        this.classes("rename" + StringGroovyMethods.capitalize(input.getName()), input, action);
+    default TaskProvider<RenameJar> classes(AbstractArchiveTask input, Action<? super RenameJar> action) {
+        return this.classes("rename" + StringGroovyMethods.capitalize(input.getName()), input, action);
     }
 
-    default void classes(TaskProvider<? extends AbstractArchiveTask> input) {
-        this.classes(input, it -> it.from(input));
+    default TaskProvider<RenameJar> classes(TaskProvider<? extends AbstractArchiveTask> input) {
+        return this.classes(input, it -> it.from(input));
     }
 
-    default void classes(TaskProvider<? extends AbstractArchiveTask> input, Action<? super RenameJar> action) {
-        this.classes("rename" + StringGroovyMethods.capitalize(input.getName()), input, action);
+    default TaskProvider<RenameJar> classes(TaskProvider<? extends AbstractArchiveTask> input, Action<? super RenameJar> action) {
+        return this.classes("rename" + StringGroovyMethods.capitalize(input.getName()), input, action);
     }
 
-    default void classes(String name, AbstractArchiveTask input) {
-        this.classes(input, it -> it.from(input));
+    default TaskProvider<RenameJar> classes(String name, AbstractArchiveTask input) {
+        return this.classes(input, it -> it.from(input));
     }
 
-    void classes(String name, AbstractArchiveTask input, Action<? super RenameJar> action);
+    TaskProvider<RenameJar> classes(String name, AbstractArchiveTask input, Action<? super RenameJar> action);
 
-    default void classes(String name, TaskProvider<? extends AbstractArchiveTask> input) {
-        this.classes(input, it -> it.from(input));
+    default TaskProvider<RenameJar> classes(String name, TaskProvider<? extends AbstractArchiveTask> input) {
+        return this.classes(input, it -> it.from(input));
     }
 
-    void classes(String name, TaskProvider<? extends AbstractArchiveTask> input, Action<? super RenameJar> action);
+    TaskProvider<RenameJar> classes(String name, TaskProvider<? extends AbstractArchiveTask> input, Action<? super RenameJar> action);
 }

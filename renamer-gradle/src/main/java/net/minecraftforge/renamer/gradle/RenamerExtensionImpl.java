@@ -58,7 +58,7 @@ abstract class RenamerExtensionImpl implements RenamerExtensionInternal {
     }
 
     @Override
-    public void classes(String name, Action<? super RenameJar> action) {
-        getProject().getTasks().register(name, RenameJar.class, action);
+    public TaskProvider<RenameJar> classes(String name, Action<? super RenameJar> action) {
+        return getProject().getTasks().register(name, RenameJar.class, action);
     }
 }
