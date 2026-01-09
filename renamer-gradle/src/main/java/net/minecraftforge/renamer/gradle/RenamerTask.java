@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) Forge Development LLC
+ * SPDX-License-Identifier: LGPL-2.1-only
+ */
+package net.minecraftforge.renamer.gradle;
+
+import net.minecraftforge.gradleutils.shared.EnhancedPlugin;
+import net.minecraftforge.gradleutils.shared.EnhancedTask;
+import org.gradle.api.Project;
+import org.jetbrains.annotations.ApiStatus;
+
+@ApiStatus.Internal
+interface RenamerTask extends EnhancedTask<RenamerProblems> {
+    @Override
+    default Class<? extends EnhancedPlugin<? super Project>> pluginType() {
+        return RenamerPlugin.class;
+    }
+
+    @Override
+    default Class<RenamerProblems> problemsType() {
+        return RenamerProblems.class;
+    }
+}

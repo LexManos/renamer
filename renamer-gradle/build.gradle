@@ -1,0 +1,115 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins {
+    id 'java-gradle-plugin'
+    id 'idea'
+    id 'eclipse'
+    id 'maven-publish'
+    alias libs.plugins.gradleutils
+    alias libs.plugins.gitversion
+    alias libs.plugins.changelog
+    alias libs.plugins.licenser
+    alias libs.plugins.plugin.publish
+    alias libs.plugins.shadow
+}
+
+gradleutils.displayName = 'Renamer Gradle Plugin'
+description = 'Utilities for renaming java related files.'
+group = 'net.minecraftforge'
+version = gitversion.tagOffset
+
+println "Version: $version"
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+gradleutils.pluginDevDefaults(configurations, libs.versions.gradle)
+
+dependencies {
+    // Static Analysis
+    api libs.annotations.jspecify
+    compileOnly libs.annotations.jetbrains
+
+    // Gradle API
+    compileOnly libs.gradle
+
+    // GradleUtils Shared Base
+    implementation libs.gradleutils.shared
+}
+
+tasks.named('jar', Jar) {
+    archiveClassifier = 'thin'
+}
+
+tasks.named('shadowJar', ShadowJar) {
+    enableAutoRelocation = true
+    archiveClassifier = null
+    relocationPrefix = 'net.minecraftforge.renamer.gradle.shadow'
+
+    minimize()
+    dependencies {
+        exclude dependency(libs.annotations.jspecify)
+    }
+}
+
+tasks.named('javadoc', Javadoc) {
+    javadocTool = javaToolchains.javadocToolFor { languageVersion = JavaLanguageVersion.of(25) }
+}
+
+tasks.named('javadocJar', Jar) {
+    // Remove 4MB from javadocs jar
+    exclude 'resource-files/fonts/'
+}
+
+license {
+    header = rootProject.file('../LICENSE-header.txt')
+    newLine = false
+    exclude '**/*.properties'
+}
+
+changelog {
+    fromBase()
+}
+
+gradlePlugin {
+    website = gitversion.url
+    vcsUrl = gitversion.url + '.git'
+
+    plugins.register('renamer') {
+        id = 'net.minecraftforge.renamer'
+        implementationClass = 'net.minecraftforge.renamer.gradle.RenamerPlugin'
+        displayName = gradleutils.displayName.get()
+        description = project.description
+        tags = ['minecraftforge']
+    }
+}
+
+publishing {
+    repositories {
+        maven gradleutils.getPublishingForgeMaven(rootProject.file('../repo'))
+    }
+
+    publications.register('pluginMaven', MavenPublication) {
+        changelog.publish(it)
+        gradleutils.promote(it)
+
+        pom { pom ->
+            name = gradleutils.displayName
+            description = project.description
+
+            gradleutils.pom.addRemoteDetails(pom)
+
+            licenses {
+                license gradleutils.pom.licenses.LGPLv2_1
+            }
+
+            developers {
+                developer gradleutils.pom.developers.Jonathing
+                developer gradleutils.pom.developers.LexManos
+            }
+        }
+    }
+}

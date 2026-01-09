@@ -1,102 +1,85 @@
+import org.gradle.api.plugins.jvm.JvmTestSuite
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 
 plugins {
     id 'java-library'
+    id 'jvm-test-suite'
+    id 'idea'
     id 'eclipse'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'net.minecraftforge.licenser' version '1.0.1'
-    id 'net.minecraftforge.gradleutils' version '[2.3,2.4)'
+    alias libs.plugins.gradleutils
+    alias libs.plugins.gitversion
+    alias libs.plugins.changelog
+    alias libs.plugins.licenser
+    alias libs.plugins.shadow
 }
 
+gradleutils.displayName = 'Renamer'
+description = 'A command line tool to rename java class files'
 group = 'net.minecraftforge'
-version = gradleutils.getTagOffsetBranchVersion(null, 'master', 'HEAD')
+version = gitversion.tagOffset
+
 println "Version: $version"
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
     withSourcesJar()
 }
 
-repositories {
-    mavenCentral()
-    maven gradleutils.forgeMaven
+testing {
+    suites.named('test', JvmTestSuite) {
+        useJUnitJupiter(libs.versions.junit)
+
+        dependencies {
+            implementation libs.junit.api
+            runtimeOnly.bundle libs.bundles.junit.runtime
+            implementation libs.powermock
+        }
+
+        targets.configureEach {
+            testTask.configure {
+                testLogging {
+                    events 'passed', 'skipped', 'failed'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation(libs.jopt.simple)
-    api(libs.srgutils)
-    implementation(libs.bundles.asm)
+    compileOnly libs.annotations.jetbrains
 
-    testImplementation(libs.junit.api)
-    testRuntimeOnly(libs.bundles.junit.runtime)
-    testImplementation(libs.powermock)
-
-    compileOnly(libs.nulls)
+    implementation libs.jopt
+    api libs.srgutils
+    implementation libs.bundles.asm
 }
 
-tasks.named('test', Test).configure {
-    useJUnitPlatform()
-    testLogging {
-        events 'passed', 'skipped', 'failed'
-    }
-}
-
-tasks.named('jar', Jar).configure {
+tasks.named('jar', Jar) {
     manifest {
-        attributes('Main-Class': 'net.minecraftforge.fart.Main')
+        attributes('Main-Class': 'net.minecraftforge.renamer.Main')
         attributes([
-                'Specification-Title':      'ForgeAutoRenamingTool',
-                'Specification-Vendor':     'Forge Development LLC',
-                'Specification-Version':    gradleutils.gitInfo.tag,
-                'Implementation-Title':     'ForgeAutoRenamingTool',
-                'Implementation-Version':   project.version,
-                'Implementation-Vendor':    'Forge Development LLC'
+            'Specification-Title'   : 'Renamer',
+            'Specification-Vendor'  : gradleutils.vendor.get(),
+            'Specification-Version' : gitversion.info.tag,
+            'Implementation-Title'  : 'Renamer',
+            'Implementation-Version': project.version,
+            'Implementation-Vendor' : gradleutils.vendor.get()
         ], 'net/minecraftforge/fart/')
     }
 }
 
-tasks.named('shadowJar', ShadowJar).configure {
-    manifest {
-        attributes('Main-Class': 'net.minecraftforge.fart.Main')
-        attributes([
-                'Specification-Title':      'ForgeAutoRenamingTool',
-                'Specification-Vendor':     'Forge Development LLC',
-                'Specification-Version':    gradleutils.gitInfo.tag,
-                'Implementation-Title':     'ForgeAutoRenamingTool',
-                'Implementation-Version':   project.version,
-                'Implementation-Vendor':    'Forge Development LLC'
-        ], 'net/minecraftforge/fart/')
-    }
+tasks.named('shadowJar', ShadowJar) {
+    enableAutoRelocation = true
+    relocationPrefix = 'net.minecraftforge.renamer.relocated'
 
     minimize()
 
-    final List<String> relocations = [
-            'org.objectweb.asm',
-            'net.minecraftforge.srgutils',
-            'joptsimple'
-    ]
-
-    relocations.each {
-        relocate it, "net.minecraftforge.fart.relocated.$it"
-    }
-
     // Rewrite JOpt's message files, so that help text is displayed nicely.
     transform(PropertiesFileTransformer) {
-        paths = [ 'Messages.properties$' ]
-        keyTransformer = { key -> "net.minecraftforge.fart.relocated.$key".toString() }
+        paths = ['Messages.properties$']
+        keyTransformer = { key -> "net.minecraftforge.renamer.relocated.$key".toString() }
     }
-}
-
-tasks.named('assemble').configure {
-    dependsOn 'shadowJar'
-}
-
-tasks.named('compileJava', JavaCompile).configure {
-    options.encoding = 'UTF-8'
 }
 
 changelog {
@@ -110,25 +93,26 @@ license {
 }
 
 publishing {
+    repositories {
+        maven gradleutils.publishingForgeMaven
+    }
+
     publications.register('mavenJava', MavenPublication) {
+        suppressAllPomMetadataWarnings()
         from components.java
 
         pom {
-            name = 'Forge Auto Renaming Tool'
+            name = 'Renamer'
             description = 'A tool that renames java bytecode elements.'
-            url = 'https://github.com/MinecraftForge/ForgeAutoRenamingTool'
+            url = 'https://github.com/MinecraftForge/renamer'
 
-            gradleutils.pom.setGitHubDetails(pom, 'ForgeAutoRenamingTool')
+            gradleutils.pom.addRemoteDetails(pom)
 
-            license gradleutils.pom.Licenses.LGPLv2_1
+            license gradleutils.pom.licenses.LGPLv2_1
 
             developers {
-                developer gradleutils.pom.Developers.LexManos
+                developer gradleutils.pom.developers.LexManos
             }
         }
-    }
-
-    repositories {
-        maven gradleutils.publishingForgeMaven
     }
 }

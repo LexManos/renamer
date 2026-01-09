@@ -1,0 +1,42 @@
+import net.minecraftforge.renamer.gradle.RenameJar
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.renamer'
+}
+
+group = 'net.minecraftforge'
+version = '0.0'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+dependencies {
+    compileOnly libs.log4j.api
+}
+
+renamer.classes(jar) {
+    map = files('libs/mappings_test-1.0.tsrg.gz')
+}
+
+publishing {
+    // Publish to the 'repo' folder, so we can see what the final artifacts will be
+    repositories {
+        maven { url = project.file('../repo').absoluteFile.toURI() }
+    }
+    publications.register('mavenJava', MavenPublication) {
+        from components.java
+
+        artifact renameJar
+    }
+}
+
+//renamer {
+//    mappings = files('libs/mappings_test-1.0.tsrg.gz')
+//    //mappings('test', '1.0')
+//    //mappings dependencies.variantOf(libs.mappings) { artifactType 'tsrg.gz' }
+//}
+//
+//renamer.classes('renameRemote', jar)

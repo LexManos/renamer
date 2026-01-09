@@ -2,10 +2,7 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
-rootProject.name = 'renamer'
-
-includeBuild 'renamer-gradle'
-includeBuild 'renamer-gradle-demo'
+rootProject.name = 'renamer-gradle'
 
 // Applying plugins causes them to not have any IDE support when also applied to any build.gradle files
 // The workaround for now is to use this listener here so that it can stay in settings.gradle
@@ -22,28 +19,24 @@ gradle.beforeProject { Project project ->
 
 //@formatter:off
 dependencyResolutionManagement.versionCatalogs.register('libs') {
+    version 'gradleutils', '3.4.1'
+
     plugin 'licenser',       'net.minecraftforge.licenser'    version '1.2.0' // https://plugins.gradle.org/plugin/net.minecraftforge.licenser
-    plugin 'gradleutils',    'net.minecraftforge.gradleutils' version '3.4.1' // https://plugins.gradle.org/plugin/net.minecraftforge.gradleutils
+    plugin 'gradleutils',    'net.minecraftforge.gradleutils' versionRef 'gradleutils' // https://plugins.gradle.org/plugin/net.minecraftforge.gradleutils
     plugin 'gitversion',     'net.minecraftforge.gitversion'  version '3.1.7' // https://plugins.gradle.org/plugin/net.minecraftforge.gitversion
     plugin 'changelog',      'net.minecraftforge.changelog'   version '3.2.1' // https://plugins.gradle.org/plugin/net.minecraftforge.changelog
+    plugin 'plugin-publish', 'com.gradle.plugin-publish'      version '2.0.0' // https://plugins.gradle.org/plugin/com.gradle.plugin-publish
     plugin 'shadow',         'com.gradleup.shadow'            version '9.3.0' // https://plugins.gradle.org/plugin/com.gradleup.shadow
 
-    library 'annotations-jetbrains', 'org.jetbrains', 'annotations' version '24.0.1'
+    // Static Analysis
+    library 'annotations-jspecify',  'org.jspecify',  'jspecify'    version '1.0.0'
+    library 'annotations-jetbrains', 'org.jetbrains', 'annotations' version '26.0.2'
 
-    library 'jopt',      'net.sf.jopt-simple', 'jopt-simple'    version '6.0-alpha-3'
-    library 'srgutils',  'net.minecraftforge', 'srgutils'       version '0.6.0'
-    library 'powermock', 'org.powermock',      'powermock-core' version '2.0.9'
+    // Gradle API
+    version 'gradle', '9.1.0'
+    library 'gradle', 'name.remal.gradle-api', 'gradle-api'  versionRef 'gradle'
 
-    version 'asm', '9.7.1'
-    library 'asm',         'org.ow2.asm', 'asm'         versionRef 'asm'
-    library 'asm-commons', 'org.ow2.asm', 'asm-commons' versionRef 'asm'
-    library 'asm-tree',    'org.ow2.asm', 'asm-tree'    versionRef 'asm'
-    bundle  'asm', ['asm', 'asm-commons', 'asm-tree']
-
-    version 'junit', '5.10.1'
-    library 'junit-api',               'org.junit.jupiter',  'junit-jupiter-api'       versionRef 'junit'
-    library 'junit-engine',            'org.junit.jupiter',  'junit-jupiter-engine'    versionRef 'junit'
-    library 'junit-platform-launcher', 'org.junit.platform', 'junit-platform-launcher' version '1.10.1'
-    bundle  'junit-runtime', ['junit-engine', 'junit-platform-launcher']
+    // GradleUtils Shared Base
+    library 'gradleutils-shared', 'net.minecraftforge', 'gradleutils-shared' versionRef 'gradleutils'
 }
 //@formatter:on
