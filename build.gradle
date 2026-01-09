@@ -15,7 +15,7 @@ plugins {
     alias libs.plugins.shadow
 }
 
-gradleutils.displayName = 'Forge Auto Renaming Tool' // 'Renamer'
+gradleutils.displayName = 'Renamer'
 description = 'A command line tool to rename java class files'
 group = 'net.minecraftforge'
 version = gitversion.tagOffset
@@ -57,12 +57,12 @@ dependencies {
 
 tasks.named('jar', Jar) {
     manifest {
-        attributes('Main-Class': 'net.minecraftforge.fart.Main')
+        attributes('Main-Class': 'net.minecraftforge.renamer.Main')
         attributes([
-            'Specification-Title'   : 'ForgeAutoRenamingTool',
+            'Specification-Title'   : 'Renamer',
             'Specification-Vendor'  : gradleutils.vendor.get(),
             'Specification-Version' : gitversion.info.tag,
-            'Implementation-Title'  : 'ForgeAutoRenamingTool',
+            'Implementation-Title'  : 'Renamer',
             'Implementation-Version': project.version,
             'Implementation-Vendor' : gradleutils.vendor.get()
         ], 'net/minecraftforge/fart/')
@@ -71,14 +71,14 @@ tasks.named('jar', Jar) {
 
 tasks.named('shadowJar', ShadowJar) {
     enableAutoRelocation = true
-    relocationPrefix = 'net.minecraftforge.fart.relocated'
+    relocationPrefix = 'net.minecraftforge.renamer.relocated'
 
     minimize()
 
     // Rewrite JOpt's message files, so that help text is displayed nicely.
     transform(PropertiesFileTransformer) {
         paths = ['Messages.properties$']
-        keyTransformer = { key -> "net.minecraftforge.fart.relocated.$key".toString() }
+        keyTransformer = { key -> "net.minecraftforge.renamer.relocated.$key".toString() }
     }
 }
 
@@ -98,12 +98,13 @@ publishing {
     }
 
     publications.register('mavenJava', MavenPublication) {
+        suppressAllPomMetadataWarnings()
         from components.java
 
         pom {
-            name = 'Forge Auto Renaming Tool'
+            name = 'Renamer'
             description = 'A tool that renames java bytecode elements.'
-            url = 'https://github.com/MinecraftForge/ForgeAutoRenamingTool'
+            url = 'https://github.com/MinecraftForge/renamer'
 
             gradleutils.pom.addRemoteDetails(pom)
 

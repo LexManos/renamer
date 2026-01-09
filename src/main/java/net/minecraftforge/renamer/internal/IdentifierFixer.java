@@ -1,16 +1,17 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraftforge.fart.api.IdentifierFixerConfig;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import net.minecraftforge.renamer.api.IdentifierFixerConfig;
 
 public final class IdentifierFixer extends OptionalChangeTransformer {
     public IdentifierFixer(IdentifierFixerConfig config) {

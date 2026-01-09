@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,8 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import net.minecraftforge.fart.api.Transformer;
+
+import net.minecraftforge.renamer.api.Transformer;
 
 public final class FFLineFixer implements Transformer {
     private final Map<String, NavigableMap<Integer, Integer>> classes = new HashMap<>();

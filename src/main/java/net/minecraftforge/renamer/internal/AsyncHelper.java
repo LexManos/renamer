@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;

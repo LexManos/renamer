@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart;
+package net.minecraftforge.renamer;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,11 +21,11 @@ import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-import net.minecraftforge.fart.api.IdentifierFixerConfig;
-import net.minecraftforge.fart.api.Renamer;
-import net.minecraftforge.fart.api.SignatureStripperConfig;
-import net.minecraftforge.fart.api.SourceFixerConfig;
-import net.minecraftforge.fart.api.Transformer;
+import net.minecraftforge.renamer.api.IdentifierFixerConfig;
+import net.minecraftforge.renamer.api.Renamer;
+import net.minecraftforge.renamer.api.SignatureStripperConfig;
+import net.minecraftforge.renamer.api.SourceFixerConfig;
+import net.minecraftforge.renamer.api.Transformer;
 import net.minecraftforge.srgutils.IMappingFile;
 
 public class Main {

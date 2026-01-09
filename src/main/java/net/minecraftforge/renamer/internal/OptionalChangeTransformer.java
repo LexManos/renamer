@@ -1,13 +1,14 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
-import net.minecraftforge.fart.api.Transformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+
+import net.minecraftforge.renamer.api.Transformer;
 
 import java.util.function.Function;
 

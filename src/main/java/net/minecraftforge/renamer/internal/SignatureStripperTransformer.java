@@ -1,11 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
-
-import net.minecraftforge.fart.api.SignatureStripperConfig;
-import net.minecraftforge.fart.api.Transformer;
+package net.minecraftforge.renamer.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +13,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+
+import net.minecraftforge.renamer.api.SignatureStripperConfig;
+import net.minecraftforge.renamer.api.Transformer;
 
 public class SignatureStripperTransformer implements Transformer {
     private final Consumer<String> log;

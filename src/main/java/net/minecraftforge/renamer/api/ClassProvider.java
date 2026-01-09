@@ -1,16 +1,17 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.api;
+package net.minecraftforge.renamer.api;
 
-import net.minecraftforge.fart.internal.ClassLoaderClassProvider;
-import net.minecraftforge.fart.internal.ClassProviderBuilderImpl;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import net.minecraftforge.renamer.internal.ClassLoaderClassProvider;
+import net.minecraftforge.renamer.internal.ClassProviderBuilderImpl;
 
 import java.io.Closeable;
 import java.lang.reflect.Field;

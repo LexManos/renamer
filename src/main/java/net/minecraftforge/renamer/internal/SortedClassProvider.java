@@ -1,10 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
-
-import net.minecraftforge.fart.api.ClassProvider;
+package net.minecraftforge.renamer.internal;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+
+import net.minecraftforge.renamer.api.ClassProvider;
 
 class SortedClassProvider implements ClassProvider {
     List<ClassProvider> classProviders;

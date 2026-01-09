@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import net.minecraftforge.fart.api.ClassProvider;
+import net.minecraftforge.renamer.api.ClassProvider;
 
 public class ClassProviderBuilderImpl implements ClassProvider.Builder {
     private final List<FileSystem> fileSystems = new ArrayList<>();

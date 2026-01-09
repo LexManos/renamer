@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,10 +17,10 @@ import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.Remapper;
 
-import net.minecraftforge.fart.api.ClassProvider;
-import net.minecraftforge.fart.api.ClassProvider.IClassInfo;
-import net.minecraftforge.fart.api.ClassProvider.IFieldInfo;
-import net.minecraftforge.fart.api.ClassProvider.IMethodInfo;
+import net.minecraftforge.renamer.api.ClassProvider;
+import net.minecraftforge.renamer.api.ClassProvider.IClassInfo;
+import net.minecraftforge.renamer.api.ClassProvider.IFieldInfo;
+import net.minecraftforge.renamer.api.ClassProvider.IMethodInfo;
 import net.minecraftforge.srgutils.IMappingFile;
 
 import static org.objectweb.asm.Opcodes.*;

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.api;
+package net.minecraftforge.renamer.api;
 
 import java.io.File;
 import java.util.Collection;
@@ -10,14 +10,14 @@ import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 
-import net.minecraftforge.fart.internal.FFLineFixer;
-import net.minecraftforge.fart.internal.IdentifierFixer;
-import net.minecraftforge.fart.internal.ParameterAnnotationFixer;
-import net.minecraftforge.fart.internal.EntryImpl;
-import net.minecraftforge.fart.internal.RecordFixer;
-import net.minecraftforge.fart.internal.RenamingTransformer;
-import net.minecraftforge.fart.internal.SignatureStripperTransformer;
-import net.minecraftforge.fart.internal.SourceFixer;
+import net.minecraftforge.renamer.internal.EntryImpl;
+import net.minecraftforge.renamer.internal.FFLineFixer;
+import net.minecraftforge.renamer.internal.IdentifierFixer;
+import net.minecraftforge.renamer.internal.ParameterAnnotationFixer;
+import net.minecraftforge.renamer.internal.RecordFixer;
+import net.minecraftforge.renamer.internal.RenamingTransformer;
+import net.minecraftforge.renamer.internal.SignatureStripperTransformer;
+import net.minecraftforge.renamer.internal.SourceFixer;
 import net.minecraftforge.srgutils.IMappingFile;
 import org.objectweb.asm.Type;
 

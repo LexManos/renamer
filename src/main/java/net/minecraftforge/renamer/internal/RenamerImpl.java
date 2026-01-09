@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,13 +19,13 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import org.objectweb.asm.Opcodes;
 
-import net.minecraftforge.fart.api.ClassProvider;
-import net.minecraftforge.fart.api.Renamer;
-import net.minecraftforge.fart.api.Transformer;
-import net.minecraftforge.fart.api.Transformer.ClassEntry;
-import net.minecraftforge.fart.api.Transformer.Entry;
-import net.minecraftforge.fart.api.Transformer.ManifestEntry;
-import net.minecraftforge.fart.api.Transformer.ResourceEntry;
+import net.minecraftforge.renamer.api.ClassProvider;
+import net.minecraftforge.renamer.api.Renamer;
+import net.minecraftforge.renamer.api.Transformer;
+import net.minecraftforge.renamer.api.Transformer.ClassEntry;
+import net.minecraftforge.renamer.api.Transformer.Entry;
+import net.minecraftforge.renamer.api.Transformer.ManifestEntry;
+import net.minecraftforge.renamer.api.Transformer.ResourceEntry;
 
 class RenamerImpl implements Renamer {
     static final int MAX_ASM_VERSION = Opcodes.ASM9;

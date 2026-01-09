@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import net.minecraftforge.fart.api.ClassProvider;
-import net.minecraftforge.fart.api.Renamer;
-import net.minecraftforge.fart.api.Renamer.Builder;
-import net.minecraftforge.fart.api.Transformer;
+import net.minecraftforge.renamer.api.ClassProvider;
+import net.minecraftforge.renamer.api.Renamer;
+import net.minecraftforge.renamer.api.Transformer;
+import net.minecraftforge.renamer.api.Renamer.Builder;
 import net.minecraftforge.srgutils.IMappingFile;
 
 import static java.util.Objects.requireNonNull;

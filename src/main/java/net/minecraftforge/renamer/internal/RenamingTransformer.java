@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.internal;
+package net.minecraftforge.renamer.internal;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -16,8 +16,8 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.commons.ClassRemapper;
 
-import net.minecraftforge.fart.api.ClassProvider;
-import net.minecraftforge.fart.api.Transformer;
+import net.minecraftforge.renamer.api.ClassProvider;
+import net.minecraftforge.renamer.api.Transformer;
 import net.minecraftforge.srgutils.IMappingFile;
 
 public class RenamingTransformer implements Transformer {

@@ -9,6 +9,7 @@ plugins {
 }
 
 group = 'net.minecraftforge'
+version = '0.0'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -21,6 +22,10 @@ renamer.classes(jar) {
 }
 
 publishing {
+    // Publish to the 'repo' folder, so we can see what the final artifacts will be
+    repositories {
+        maven { url = project.file('../repo').absoluteFile.toURI() }
+    }
     publications.register('mavenJava', MavenPublication) {
         from components.java
 

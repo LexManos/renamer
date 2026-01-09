@@ -23,7 +23,7 @@ println "Version: $version"
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
     withSourcesJar()
-    //withJavadocJar()
+    withJavadocJar()
 }
 
 gradleutils.pluginDevDefaults(configurations, libs.versions.gradle)
@@ -59,12 +59,10 @@ tasks.named('javadoc', Javadoc) {
     javadocTool = javaToolchains.javadocToolFor { languageVersion = JavaLanguageVersion.of(25) }
 }
 
-/*
 tasks.named('javadocJar', Jar) {
     // Remove 4MB from javadocs jar
     exclude 'resource-files/fonts/'
 }
- */
 
 license {
     header = rootProject.file('../LICENSE-header.txt')

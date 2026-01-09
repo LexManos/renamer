@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Forge Development LLC and contributors
+ * Copyright (c) Forge Development LLC
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package net.minecraftforge.fart.api;
+package net.minecraftforge.renamer.api;
 
 /**
  * Identifier transformation strategy for {@link Transformer#identifierFixerFactory(IdentifierFixerConfig)}.
